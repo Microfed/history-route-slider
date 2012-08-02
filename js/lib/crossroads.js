@@ -6,7 +6,7 @@
  */
 
 (function (define) {
-define(['signals'], function (_signals) {
+define('crossroads', ['signals'], function (_signals) {
 
     var crossroads,
         _hasOptionalGroupBug,
