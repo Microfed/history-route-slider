@@ -9,7 +9,7 @@
  * @build 187 (07/11/2011 10:14 AM)
  */
 (function(global){
-	
+
     /**
      * @namespace Signals Namespace - Custom event/messaging system based on AS3 Signals
      * @name signals
@@ -88,7 +88,7 @@
          * @type boolean
          */
         active : true,
-        
+
         /**
          * Default parameters passed to listener during `Signal.dispatch` and `SignalBinding.execute`. (curried parameters)
          * @type Array|null
@@ -167,7 +167,7 @@
 
     // Signal --------------------------------------------------------
     //================================================================
-    
+
     function validateListener(listener, fnName) {
         if (typeof listener !== 'function') {
             throw new Error( 'listener is a required param of {fn}() and should be a Function.'.replace('{fn}', fnName) );
@@ -363,5 +363,5 @@
 
 
 	global.signals = signals;
-	
+
 }(window || this));

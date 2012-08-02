@@ -6,7 +6,7 @@
  */
 
 (function (define) {
-    define('hasher', ['signals'], function(signals){
+    define('hasher', ['signals'], function(_signals){
 
 /*jshint white:false*/
 /*global signals:false, window:false*/
