@@ -1,21 +1,21 @@
 require.config({
-    baseUrl:'js',
-    paths:{
-        'jquery':'lib/jquery',
-        'signals':'lib/signals',
-        'crossroads':'lib/crossroads',
-        'hasher':'lib/hasher'
+    baseUrl: 'js',
+    paths: {
+        'jquery': 'lib/jquery',
+        'signals': 'lib/signals',
+        'crossroads': 'lib/crossroads',
+        'hasher': 'lib/hasher'
     }
 });
 
 define('app', ['jquery', 'layoutManager', 'router'],
     function ($, layoutManager, router) {
+        'use strict';
         $(function () {
-            'use strict';
             var config = {
-                    layoutElId:'layout',
-                    pageIdSuffix:'-page',
-                    pageElClass:'page'
+                    layoutElId: 'layout',
+                    pageIdSuffix: '-page',
+                    pageElClass: 'page'
                 },
                 layoutManagerInst = layoutManager(config),
                 routerInst = router(layoutManagerInst, config, 'home');
@@ -23,7 +23,7 @@ define('app', ['jquery', 'layoutManager', 'router'],
             routerInst.init();
 
             // adding onclick events on each button
-            $('input').each(function (index) {
+            $('input').each(function () {
                 $(this).on('click', function (event) {
                     routerInst.setHash(this.id);
                     event.preventDefault();
@@ -33,6 +33,5 @@ define('app', ['jquery', 'layoutManager', 'router'],
 
         return {
             // TODO: make an object
-        }
-    }
-);
+        };
+    });

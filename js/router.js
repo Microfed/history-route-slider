@@ -1,10 +1,9 @@
-define('router', ['crossroads', 'hasher', 'layoutManager'],
-    function (crossroads, hasher, _layoutManager) {
+define('router', ['crossroads', 'hasher'],
+    function (crossroads, hasher) {
         "use strict";
         return function (layoutManager, config, firstPageName) {
-            'use strict';
             return {
-                init:function () {
+                init: function () {
                     crossroads.addRoute('{page}', layoutManager.displayPage);
                     // setup hasher
                     function parseHash(newHash, oldHash) {
@@ -21,10 +20,9 @@ define('router', ['crossroads', 'hasher', 'layoutManager'],
                     // update URL fragment generating new history record
                     hasher.setHash(firstPageName);
                 },
-                setHash:function (hash) {
+                setHash: function (hash) {
                     hasher.setHash(hash);
                 }
             };
-        }
-    }
-);
+        };
+    });

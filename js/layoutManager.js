@@ -2,14 +2,12 @@ define('layoutManager', ['jquery'],
     function ($) {
         "use strict";
         return function (config) {
-            'use strict';
             var layoutEl = $('#' + config.layoutElId),
                 pagesEls = $('.' + config.pageElClass, layoutEl),
                 pageIdSuffix = config.pageIdSuffix;
 
-            return  {
-                displayPage:function (page) {
-                    'use strict';
+            return {
+                displayPage: function (page) {
                     var targetScreen = layoutEl.find('#' + page + pageIdSuffix),
                         currentScreen = layoutEl.find('#' + config.oldHash + pageIdSuffix),
                         nextDivFromCurrentScreen = currentScreen.next(),
@@ -19,23 +17,25 @@ define('layoutManager', ['jquery'],
                         prevFromCurrentScreenId = prevFromCurrentScreen.attr('id'),
                         divElHeight = currentScreen.height(),
                         slide = function (leftToRight) {
-                            'use strict';
                             var cssMarginTop = '-' + divElHeight + 'px';
 
-                            leftToRight ?
-                                targetScreen.css('margin-top', cssMarginTop) :
+                            if (leftToRight) {
+                                targetScreen.css('margin-top', cssMarginTop);
+                            } else {
                                 currentScreen.css('margin-top', cssMarginTop);
+                            }
+
                             targetScreen.css('margin-left', leftToRight ? '100%' : '-100%');
                             currentScreen.css('margin-left', '0%');
 
                             targetScreen.show();
 
                             targetScreen.animate({
-                                'margin-left':'0'
+                                'margin-left': '0'
                             }, 500);
 
                             currentScreen.animate({
-                                'margin-left':leftToRight ? '-100%' : '100%'
+                                'margin-left': leftToRight ? '-100%' : '100%'
                             }, 500, function () {
                                 targetScreen.css('margin-top', '0px');
                                 pagesEls.hide();
@@ -53,5 +53,4 @@ define('layoutManager', ['jquery'],
                 }
             };
         };
-    }
-);
+    });
