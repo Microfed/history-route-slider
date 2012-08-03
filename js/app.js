@@ -5,13 +5,13 @@ require.config({
     }
 });
 
-define('app', ['atom', 'signals', 'crossroads', 'hasher'],
-    function (_atom, _signals, crossroads, hasher) {
-        atom.dom(function () {
+define('app', ['jquery', 'signals', 'crossroads', 'hasher'],
+    function ($, _signals, crossroads, hasher) {
+        $(function () {
             // setup crossroads
             crossroads.addRoute('pages/{page}', function (page) {
-                atom.dom('.page').css('display', 'none');
-                atom.dom('#' + page + '-page').css('display', 'block');
+                $('div.page').hide();
+                $('div#' + page + '-page').show();
             });
 
             // setup hasher
@@ -27,10 +27,10 @@ define('app', ['atom', 'signals', 'crossroads', 'hasher'],
             hasher.setHash('pages/home');
 
             // adding onclick events on each button
-            atom.dom('input').each(function (input, index) {
-                atom.dom(input).bind({click:function () {
-                    hasher.setHash('pages/' + input.id);
-                }});
+            $('input').each(function (index) {
+                $(this).on('click', function (event) {
+                    hasher.setHash('pages/' + this.id);
+                });
             });
         });
 
