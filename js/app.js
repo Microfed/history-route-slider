@@ -1,35 +1,32 @@
 require.config({
-    baseUrl: 'js/lib',
+    baseUrl:'js',
     paths:{
-        'app': 'js'
+        'jquery':'lib/jquery',
+        'signals':'lib/signals',
+        'crossroads':'lib/crossroads',
+        'hasher':'lib/hasher'
     }
 });
 
-define('app', ['jquery', 'signals', 'crossroads', 'hasher'],
-    function ($, _signals, crossroads, hasher) {
+define('app', ['jquery', 'layoutManager', 'router'],
+    function ($, layoutManager, router) {
         $(function () {
-            // setup crossroads
-            crossroads.addRoute('pages/{page}', function (page) {
-                $('div.page').hide();
-                $('div#' + page + '-page').show();
-            });
+            'use strict';
+            var config = {
+                    layoutElId:'layout',
+                    pageIdSuffix:'-page',
+                    pageElClass:'page'
+                },
+                layoutManagerInst = layoutManager(config),
+                routerInst = router(layoutManagerInst, config, 'home');
 
-            // setup hasher
-            function parseHash(newHash, oldHash) {
-                crossroads.parse(newHash);
-            }
-
-            hasher.initialized.add(parseHash); // parse initial hash
-            hasher.changed.add(parseHash); // parse hash changes
-            hasher.init(); // start listening for history change
-
-            // update URL fragment generating new history record
-            hasher.setHash('pages/home');
+            routerInst.init();
 
             // adding onclick events on each button
             $('input').each(function (index) {
                 $(this).on('click', function (event) {
-                    hasher.setHash('pages/' + this.id);
+                    routerInst.setHash(this.id);
+                    event.preventDefault();
                 });
             });
         });
