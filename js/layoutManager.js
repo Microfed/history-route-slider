@@ -22,7 +22,7 @@ define('layoutManager', ['jquery'],
                              *
                              *  @param {boolean} leftToRight Set sliding direction
                              */
-                                slide = function (leftToRight, callback) {
+                            slide = function (leftToRight, callback) {
                                 var cssMarginTop = '-' + divElHeight + 'px';
 
                                 if (leftToRight) {
