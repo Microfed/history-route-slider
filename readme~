@@ -2,5 +2,4 @@
 Зависимости:
 	- crossroads.js;
 	- Hasher.js;
-	- Require.js;
-	- jQuery (for animation).
+	- Require.js.
