@@ -15,7 +15,8 @@ define('app', ['jquery', 'layoutManager', 'router'],
             var config = {
                     layoutElId: 'layout',
                     pageIdSuffix: '-page',
-                    pageElClass: 'page'
+                    pageElClass: 'page',
+                    animationDuration: 500
                 },
                 layoutManagerInst = layoutManager(config),
                 routerInst = router(layoutManagerInst, config, 'home');

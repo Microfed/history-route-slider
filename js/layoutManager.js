@@ -16,6 +16,13 @@ define('layoutManager', ['jquery'],
                         nextDivFromCurrentScreenId = nextDivFromCurrentScreen.attr('id'),
                         prevFromCurrentScreenId = prevFromCurrentScreen.attr('id'),
                         divElHeight = currentScreen.height(),
+                        /**
+                         *  @describe Moves two html-elements in the way that
+                         *  it seems like sequential sliding. It assumes that
+                         *  height of each element is identical + float: left;
+                         *
+                         *  @param {boolean} leftToRight Set sliding direction
+                         */
                         slide = function (leftToRight) {
                             var cssMarginTop = '-' + divElHeight + 'px';
 
@@ -32,11 +39,11 @@ define('layoutManager', ['jquery'],
 
                             targetScreen.animate({
                                 'margin-left': '0'
-                            }, 500);
+                            }, config.animationDuration);
 
                             currentScreen.animate({
                                 'margin-left': leftToRight ? '-100%' : '100%'
-                            }, 500, function () {
+                            }, config.animationDuration, function () {
                                 targetScreen.css('margin-top', '0px');
                                 pagesEls.hide();
                                 targetScreen.show();
