@@ -11,12 +11,13 @@ require.config({
 define('app', ['jquery', 'layoutManager', 'router'],
     function ($, layoutManager, router) {
         'use strict';
+
         $(function () {
             var config = {
                     layoutElId: 'layout',
                     pageIdSuffix: '-page',
                     pageElClass: 'page',
-                    animationDuration: 500
+                    animationDuration: 300
                 },
                 layoutManagerInst = layoutManager(config),
                 routerInst = router(layoutManagerInst, config, 'home');

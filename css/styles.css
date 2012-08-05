@@ -1,11 +1,24 @@
 #layout {
     width: 99%;
-    height: 80%;
+    height: 650px;
     overflow: hidden;
 }
 .page{
     width: 100%;
-    height: 100%;
+    height: 650px;
+    margin-top: 0;
+}
+.page-animating{
+    margin-top: -650px;
+}
+.page-animated{
+    margin-top: 0;
+}
+.page-slide-left-to-right{
+    margin-left: 100%;
+}
+.page-slide-right-to-left{
+    margin-left: -100%;
 }
 #home-page{
     background-color: #336699;
