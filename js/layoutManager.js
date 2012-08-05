@@ -4,7 +4,7 @@ define('layoutManager', ['jquery', 'scheduler'],
         var animationScheduler = scheduler.getScheduler();
 
         return function (config) {
-            var layoutEl = $('#' + config.layoutElId),
+            var layoutEl = config.layoutEl,
                 pagesEls = $('.' + config.pageElClass, layoutEl),
                 pageIdSuffix = config.pageIdSuffix,
                 /**
@@ -12,13 +12,14 @@ define('layoutManager', ['jquery', 'scheduler'],
                  *  on the page.
                  */
                 layoutManager = {
+                    currentScreen: null,
                     /**
                      * @describe Animates the show of the page
                      * @param {String} page Page id
                      */
                     displayPage: function (page) {
                         var targetScreen = layoutEl.find('#' + page + pageIdSuffix),
-                            currentScreen = layoutEl.find('#' + config.oldHash + pageIdSuffix),
+                            currentScreen = $(layoutManager.currentPage) || layoutEl.find('#' + config.oldHash + pageIdSuffix),
                             nextDivFromCurrentScreen = currentScreen.next(),
                             prevFromCurrentScreen = currentScreen.prev(),
                             targetScreenDivId = targetScreen.attr('id'),
@@ -65,10 +66,14 @@ define('layoutManager', ['jquery', 'scheduler'],
                                             pagesEls.hide();
                                             targetScreen.show();
 //                                            config.currentScreen = targetScreen;
+                                            //layoutManager.currentPage = currentScreen;
                                         });
                                     }, duration);
                                 }
                             };
+
+                        // set current screen to target
+                        layoutManager.currentScreen = targetScreen[0];
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
                             // target screen on the left
@@ -87,6 +92,9 @@ define('layoutManager', ['jquery', 'scheduler'],
                         }
 
                         animationScheduler.run();
+                    },
+                    getCurrentScreen: function () {
+                        return layoutManager.currentScreen;
                     }
                 };
 
