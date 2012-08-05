@@ -19,7 +19,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                      */
                     displayPage: function (page) {
                         var targetScreen = layoutEl.find('#' + page + pageIdSuffix),
-                            currentScreen = $(layoutManager.currentPage) || layoutEl.find('#' + config.oldHash + pageIdSuffix),
+                            currentScreen = layoutEl.find('#' + config.oldHash + pageIdSuffix),
                             nextDivFromCurrentScreen = currentScreen.next(),
                             prevFromCurrentScreen = currentScreen.prev(),
                             targetScreenDivId = targetScreen.attr('id'),
@@ -65,15 +65,13 @@ define('layoutManager', ['jquery', 'scheduler'],
                                             currentScreen.css('margin-top', '0px');
                                             pagesEls.hide();
                                             targetScreen.show();
-//                                            config.currentScreen = targetScreen;
-                                            //layoutManager.currentPage = currentScreen;
                                         });
                                     }, duration);
                                 }
                             };
 
                         // set current screen to target
-                        layoutManager.currentScreen = targetScreen[0];
+                        layoutManager.currentScreen = targetScreen;
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
                             // target screen on the left
@@ -94,7 +92,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                         animationScheduler.run();
                     },
                     getCurrentScreen: function () {
-                        return layoutManager.currentScreen;
+                        return layoutManager.currentScreen[0];
                     }
                 };
 
