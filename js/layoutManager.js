@@ -71,7 +71,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                             };
 
                         // set current screen to target
-                        layoutManager.currentScreen = targetScreen;
+                        layoutManager.currentScreen = targetScreen[0];
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
                             // target screen on the left
@@ -92,7 +92,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                         animationScheduler.run();
                     },
                     getCurrentScreen: function () {
-                        return layoutManager.currentScreen[0];
+                        return layoutManager.currentScreen;
                     }
                 };
 
