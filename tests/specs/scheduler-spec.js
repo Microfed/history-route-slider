@@ -89,7 +89,7 @@ require(['scheduler'], function (scheduler) {
                 jasmine.Clock.useMock();
             });
 
-            it("should fire the next event in queue", function () {
+            it("should fire the next event in the queue", function () {
                 var testValue = null;
 
                 schedulerWithEvents.queue(function () {
@@ -135,7 +135,7 @@ require(['scheduler'], function (scheduler) {
                 jasmine.Clock.useMock();
             });
 
-            it("should return null if the is no events in queue", function () {
+            it("should return null if the is no events in the queue", function () {
                 var schedulerWithoutEvents = scheduler.getScheduler(),
                     nextReturned = schedulerWithoutEvents.next();
 
@@ -173,7 +173,7 @@ require(['scheduler'], function (scheduler) {
                 expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
             });
 
-            it("should execute onComplete function after playing all events in queue", function () {
+            it("should execute onComplete function after playing all events in the queue", function () {
                 var onCompleteExecuted = false;
                 schedulerWithEvents.queue(function () {
                 }, 1);
@@ -191,7 +191,7 @@ require(['scheduler'], function (scheduler) {
                 expect(onCompleteExecuted).toBeTruthy();
             });
 
-            it("should set isRunning property to false after executing all events in queue", function () {
+            it("should set isRunning property to false after executing all events in the queue", function () {
                 schedulerWithEvents.queue(function () {
                 }, 1);
 

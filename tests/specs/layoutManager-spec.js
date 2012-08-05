@@ -1,6 +1,6 @@
 require(['layoutManager'], function (layoutManager) {
     'use strict';
-    describe("layoutManager module", function () {
+    describe("LayoutManager", function () {
 //        beforeEach(function () {
 //            jasmine.getFixtures().fixturesPath = '/fixtures';
 //            loadFixtures('index.html');
@@ -10,36 +10,42 @@ require(['layoutManager'], function (layoutManager) {
             expect(layoutManager).toBeDefined();
         });
 
-        it("getCurrentPage should return current page", function () {
-            var html = '<div id="layout">\
+        describe("getCurrentPage", function () {
+            it("should return current page", function () {
+                var html = '<div id="layout">\
                     <div id="home-page" class="page">\
                     </div>\
                     <div id="first-page" class="page">\
                     </div>\
                 </div>',
-                config = {
-                    layoutEl: $('#layout', $(html)),
-                    pageIdSuffix: '-page',
-                    pageElClass: 'page',
-                    animationDuration: 1
-                },
-                layoutManagerInst = layoutManager(config);
+                    config = {
+                        layoutEl: $('#layout', $(html)),
+                        pageIdSuffix: '-page',
+                        pageElClass: 'page',
+                        animationDuration: 1
+                    },
+                    layoutManagerInst = layoutManager(config);
 
-            waitsFor(function () {
-                layoutManagerInst.displayPage('first');
-                return layoutManagerInst.getCurrentScreen() === $('#first-page')[0];
-            }, "current page should be set to 'first-page'", 50);
+                waitsFor(function () {
+                    layoutManagerInst.displayPage('first');
+                    return layoutManagerInst.getCurrentScreen() === $('#first-page')[0];
+                }, "current page should be set to 'first-page'", 50);
+            });
         });
 
-        it("getCurrentPage should return null if current page is not set", function () {
-            var config = {
-                    layoutEl: $('.some.element'),
-                    pageIdSuffix: '-page',
-                    pageElClass: 'page',
-                    animationDuration: 300
-                },
-                layoutManagerInst = layoutManager(config);
-            expect(layoutManagerInst.getCurrentScreen()).toBeNull();
+        describe("getCurrentPage", function () {
+            it("should return null if current page is not set", function () {
+                var config = {
+                        layoutEl: $('.some.element'),
+                        pageIdSuffix: '-page',
+                        pageElClass: 'page',
+                        animationDuration: 300
+                    },
+                    layoutManagerInst = layoutManager(config);
+                expect(layoutManagerInst.getCurrentScreen()).toBeNull();
+            });
         });
+
+
     });
 });
