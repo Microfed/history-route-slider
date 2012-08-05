@@ -1,7 +1,17 @@
 define('router', ['crossroads', 'hasher'],
     function (crossroads, hasher) {
         "use strict";
+        /**
+         * @describe Returns a configured router object
+         * @param {Object} layoutManager Instance of layoutManager
+         * @param {Object} config Configuration for router and layoutManager
+         * @param {String} firstPageName Name of the page to show when router is initialized
+         * @return {Object} Configured router object
+         */
         return function (layoutManager, config, firstPageName) {
+            /**
+             * @describe contain methods for hash (URL) routing.
+             */
             return {
                 /**
                  * @describe initializing router and rigging it with

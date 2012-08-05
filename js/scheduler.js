@@ -2,83 +2,110 @@ define('scheduler', function () {
     "use strict";
 
     return {
+        /**
+         * @describe Return a new scheduler
+         * @return {Object} Scheduler
+         */
         getScheduler: function () {
+            /**
+             * @describe event queue
+             * @type {Array}
+             */
+            var events = [],
+                /**
+                 * @describe true if the scheduler is now processing events
+                 * @type {boolean}
+                 */
+                isRunning = false;
+
             return {
-                // event queue
-                Events: [],
-
-                // true if the scheduler is now processing events
-                IsRunning: false,
-
-                // add event (first in first out)
-                Queue: function (e, t) {
-                    if (!e || typeof (e) !== "function") {
-                        throw "First argument to Scheduler.Queue must be a function";
+                /**
+                 * @describe add event (first in first out)
+                 * @param {function} event callback to execute
+                 * @param {number} time time delay
+                 */
+                queue: function (event, time) {
+                    if (!event || typeof (event) !== "function") {
+                        throw "First argument to scheduler.queue must be a function";
                     }
-                    if (t === null || typeof (t) !== "number") {
-                        throw "Second argument to Scheduler.Queue must be an integer";
+                    if (time === null || typeof (time) !== "number") {
+                        throw "Second argument to scheduler.queue must be an integer";
                     }
 
-                    this.Events.push([ e, t ]);
+                    events.push([ event, time ]);
                 },
 
-                // execute queued events
-                Run: function () {
-                    if (!this.IsRunning) { // don't run twice
-                        this.IsRunning = true;
-                        this.Next();
+                /**
+                 * @describe execute queued events
+                 */
+                run: function () {
+                    if (!isRunning) { // don't run twice
+                        isRunning = true;
+                        this.next();
                     }
                 },
 
-                // execute next event
-                Next: function () {
+                /**
+                 * @describe execute next event
+                 */
+                next: function () {
                     // return if no events
-                    if (!this.Events || this.Events.length === 0) {
-                        this.IsRunning = false;
-                        if (this.OnComplete && typeof (this.OnComplete) === "function") {
-                            this.OnComplete();
+                    if (!events || events.length === 0) {
+                        isRunning = false;
+                        if (this.onComplete && typeof (this.onComplete) === "function") {
+                            this.onComplete();
                         }
                         return;
                     }
 
-                    if (this.IsRunning) {
-                        // get next event - first-in-first-out
-                        var o = this.Events[0], // next event
-                            e = o[0],
-                            t = o[1],
+                    if (isRunning) {
+                        // get next event - FIFO
+                        var eventObject = events[0], // next event
+                            event = eventObject[0],
+                            time = eventObject[1],
                             self = this;
 
                         setTimeout(
                             function () {
-                                if (self.IsRunning) {
-                                    e();
-                                    self.Events.shift(); // take event off queue
-                                    self.Next();
+                                if (isRunning) {
+                                    event();
+                                    events.shift(); // take event off queue
+                                    self.next();
                                 }
                             },
-                            t
+                            time
                         );
                     }
                 },
 
-                // empty event queue
-                Clear: function () {
-                    this.Events = [];
+                /**
+                 * @describe empty event queue
+                 */
+                clear: function () {
+                    events = [];
                 },
 
-                // pause execution of scheduled events without emptying event queue
-                Pause: function () {
-                    this.IsRunning = false;
+                /**
+                 * @describe pause execution of scheduled events without emptying event queue
+                 */
+                pause: function () {
+                    isRunning = false;
                 },
 
-                // stop execution of scheduled events and empty event queue
-                Stop: function () {
-                    this.Pause();
-                    this.Clear();
+                /**
+                 * @describe stop execution of scheduled events and empty event queue
+                 */
+                stop: function () {
+                    this.pause();
+                    this.clear();
                 },
 
-                // optional callback when all events are processed
-                OnComplete: null
+                /**
+                 * [optional]
+                 * @describe  callback when all events are processed
+                 * @type {function}
+                 */
+                onComplete: null
             };
         }
     };

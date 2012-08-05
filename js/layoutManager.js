@@ -7,10 +7,18 @@ define('layoutManager', ['jquery', 'scheduler'],
             var layoutEl = $('#' + config.layoutElId),
                 pagesEls = $('.' + config.pageElClass, layoutEl),
                 pageIdSuffix = config.pageIdSuffix,
+                /**
+                 * @describe contain methods for work with screens
+                 *  on the page.
+                 */
                 layoutManager = {
+                    /**
+                     * @describe Animates the show of the page
+                     * @param {String} page Page id
+                     */
                     displayPage: function (page) {
                         var targetScreen = layoutEl.find('#' + page + pageIdSuffix),
-                            currentScreen = config.currentScreen || layoutEl.find('#' + config.oldHash + pageIdSuffix),
+                            currentScreen = layoutEl.find('#' + config.oldHash + pageIdSuffix),
                             nextDivFromCurrentScreen = currentScreen.next(),
                             prevFromCurrentScreen = currentScreen.prev(),
                             targetScreenDivId = targetScreen.attr('id'),
@@ -25,13 +33,15 @@ define('layoutManager', ['jquery', 'scheduler'],
                              *  @param {boolean} leftToRight Set sliding direction
                              */
                             slide = function (leftToRight, callback) {
+                                // skip the page movement animation, if the is a callback
                                 if (undefined !== callback && callback) {
                                     callback();
                                 } else {
                                     var cssMarginTop = '-' + divElHeight + 'px',
-                                        duration = config.animationDuration + 20;
+                                        duration = config.animationDuration + 20; // duration of event for scheduler
 
-                                    animationScheduler.Queue(function () {
+                                    // Adding a slide animation to events queue
+                                    animationScheduler.queue(function () {
                                         if (leftToRight) {
                                             targetScreen.css('margin-top', cssMarginTop);
                                         } else {
@@ -54,7 +64,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                                             currentScreen.css('margin-top', '0px');
                                             pagesEls.hide();
                                             targetScreen.show();
-                                            config.currentScreen = targetScreen;
+//                                            config.currentScreen = targetScreen;
                                         });
                                     }, duration);
                                 }
@@ -76,7 +86,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                             slide(false, layoutManager.displayPage(prevFromCurrentScreenId));
                         }
 
-                        animationScheduler.Run();
+                        animationScheduler.run();
                     }
                 };
 
