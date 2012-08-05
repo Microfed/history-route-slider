@@ -5,12 +5,11 @@ require(['layoutManager'], function (layoutManager) {
 //            jasmine.getFixtures().fixturesPath = '/fixtures';
 //            loadFixtures('index.html');
 //        });
-
         it("should return defined object", function () {
             expect(layoutManager).toBeDefined();
         });
 
-        describe("getCurrentPage", function () {
+        describe("getCurrentScreen", function () {
             it("should return current page", function () {
                 var html = '<div id="layout">\
                     <div id="home-page" class="page">\
@@ -31,9 +30,7 @@ require(['layoutManager'], function (layoutManager) {
                     return layoutManagerInst.getCurrentScreen() === $('#first-page')[0];
                 }, "current page should be set to 'first-page'", 50);
             });
-        });
 
-        describe("getCurrentPage", function () {
             it("should return null if current page is not set", function () {
                 var config = {
                         layoutEl: $('.some.element'),
@@ -45,7 +42,5 @@ require(['layoutManager'], function (layoutManager) {
                 expect(layoutManagerInst.getCurrentScreen()).toBeNull();
             });
         });
-
-
     });
 });
