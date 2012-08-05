@@ -11,14 +11,14 @@ define('scheduler', function () {
              * @describe event queue
              * @type {Array}
              */
-            var events = [],
+            var events = [];
+
+            return {
                 /**
                  * @describe true if the scheduler is now processing events
                  * @type {boolean}
                  */
-                isRunning = false;
-
-            return {
+                isRunning: false,
                 /**
                  * @describe add event (first in first out)
                  * @param {function} event callback to execute
@@ -39,8 +39,8 @@ define('scheduler', function () {
                  * @describe execute queued events
                  */
                 run: function () {
-                    if (!isRunning) { // don't run twice
-                        isRunning = true;
+                    if (!this.isRunning) { // don't run twice
+                        this.isRunning = true;
                         this.next();
                     }
                 },
@@ -51,14 +51,14 @@ define('scheduler', function () {
                 next: function () {
                     // return if no events
                     if (!events || events.length === 0) {
-                        isRunning = false;
+                        this.isRunning = false;
                         if (this.onComplete && typeof (this.onComplete) === "function") {
                             this.onComplete();
                         }
                         return;
                     }
 
-                    if (isRunning) {
+                    if (this.isRunning) {
                         // get next event - FIFO
                         var eventObject = events[0], // next event
                             event = eventObject[0],
@@ -67,7 +67,7 @@ define('scheduler', function () {
 
                         setTimeout(
                             function () {
-                                if (isRunning) {
+                                if (self.isRunning) {
                                     event();
                                     events.shift(); // take event off queue
                                     self.next();
@@ -89,7 +89,7 @@ define('scheduler', function () {
                  * @describe pause execution of scheduled events without emptying event queue
                  */
                 pause: function () {
-                    isRunning = false;
+                    this.isRunning = false;
                 },
 
                 /**

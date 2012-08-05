@@ -37,5 +37,94 @@ require(['scheduler'], function (scheduler) {
                 expect(schedulerWithEvents.getEventsQueue().length).toEqual(1);
             });
         });
+
+        describe("queue", function () {
+            var schedulerWithEvents;
+
+            beforeEach(function () {
+                schedulerWithEvents = scheduler.getScheduler();
+            });
+
+            it("should add event to events queue", function () {
+                schedulerWithEvents.queue(function () {
+                }, 0);
+                schedulerWithEvents.queue(function () {
+                }, 0);
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(2);
+            });
+
+            it("should throw exception when first argument is not a function", function () {
+                expect(function () {
+                    schedulerWithEvents.queue({}, 0);
+                }).toThrow("First argument to scheduler.queue must be a function");
+            });
+
+            it("should throw exception when first argument is null", function () {
+                expect(function () {
+                    schedulerWithEvents.queue(null, 0);
+                }).toThrow("First argument to scheduler.queue must be a function");
+            });
+
+            it("should throw exception when second argument is not a number", function () {
+                expect(function () {
+                    schedulerWithEvents.queue(function () {
+                    }, {});
+                }).toThrow("Second argument to scheduler.queue must be an integer");
+            });
+
+            it("should throw exception when second argument is null", function () {
+                expect(function () {
+                    schedulerWithEvents.queue(function () {
+                    }, null);
+                }).toThrow("Second argument to scheduler.queue must be an integer");
+            });
+        });
+
+        describe("run", function () {
+            var schedulerWithEvents;
+
+            beforeEach(function () {
+                schedulerWithEvents = scheduler.getScheduler();
+                jasmine.Clock.useMock();
+            });
+
+            it("should fire the next event in queue", function () {
+                var testValue = null;
+
+                schedulerWithEvents.queue(function () {
+                    testValue = 1;
+                }, 0);
+
+                schedulerWithEvents.run();
+                jasmine.Clock.tick(100);
+                expect(testValue).toEqual(1);
+            });
+
+            it("should fire every event in queue one after another", function () {
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.queue(function () {
+                }, 1);
+
+                schedulerWithEvents.run();
+                jasmine.Clock.tick(100);
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
+            });
+
+            it("should not fire events when scheduler is already running", function () {
+                schedulerWithEvents.queue(function () {
+                }, 1);
+
+                schedulerWithEvents.isRunning = true;
+                schedulerWithEvents.run();
+                jasmine.Clock.tick(100);
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(1);
+            });
+        });
     });
 });
