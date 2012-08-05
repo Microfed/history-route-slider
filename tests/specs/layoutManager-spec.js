@@ -10,7 +10,7 @@ require(['layoutManager'], function (layoutManager) {
         });
 
         describe("getCurrentScreen", function () {
-            it("should return current page", function () {
+            it("should return current screen", function () {
                 var html = '<div id="layout">\
                     <div id="home-page" class="page">\
                     </div>\
@@ -31,7 +31,7 @@ require(['layoutManager'], function (layoutManager) {
                 }, "current page should be set to 'first-page'", 50);
             });
 
-            it("should return null if current page is not set", function () {
+            it("should return null if current screen is not set", function () {
                 var config = {
                         layoutEl: $('.some.element'),
                         pageIdSuffix: '-page',
