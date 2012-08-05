@@ -190,6 +190,62 @@ require(['scheduler'], function (scheduler) {
                 expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
                 expect(onCompleteExecuted).toBeTruthy();
             });
+
+            it("should set isRunning property to false after executing all events in queue", function () {
+                schedulerWithEvents.queue(function () {
+                }, 1);
+
+                schedulerWithEvents.isRunning = true;
+                schedulerWithEvents.next();
+                jasmine.Clock.tick(100);
+
+                expect(schedulerWithEvents.isRunning).toBeFalsy();
+            });
+        });
+
+        describe("clear", function () {
+            it("should erase event queue", function () {
+                var schedulerWithEvents = scheduler.getScheduler();
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.queue(function () {
+                }, 1);
+
+                schedulerWithEvents.clear();
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
+            });
+        });
+
+        describe("pause", function () {
+            it("should paused scheduler when it's running", function () {
+                var schedulerWithEvents = scheduler.getScheduler();
+                schedulerWithEvents.isRunning = true;
+                schedulerWithEvents.pause();
+
+                expect(schedulerWithEvents.isRunning).toBeFalsy();
+            });
+        });
+
+        describe("stop", function () {
+            it("should erase event queue and paused scheduler when it's running", function () {
+                var schedulerWithEvents = scheduler.getScheduler();
+                schedulerWithEvents.queue(function () {
+                }, 1);
+
+                schedulerWithEvents.stop();
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
+                expect(schedulerWithEvents.isRunning).toBeFalsy();
+            });
+        });
+
+        describe("onComplete", function () {
+            it("should be null by default", function () {
+                var schedulerWithEvents = scheduler.getScheduler();
+
+                expect(schedulerWithEvents.onComplete).toBeNull();
+            });
         });
     });
 });
