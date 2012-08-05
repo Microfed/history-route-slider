@@ -55,7 +55,7 @@ define('scheduler', function () {
                         if (this.onComplete && typeof (this.onComplete) === "function") {
                             this.onComplete();
                         }
-                        return;
+                        return null;
                     }
 
                     if (this.isRunning) {

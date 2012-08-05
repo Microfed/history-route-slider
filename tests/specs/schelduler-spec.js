@@ -126,5 +126,70 @@ require(['scheduler'], function (scheduler) {
                 expect(schedulerWithEvents.getEventsQueue().length).toEqual(1);
             });
         });
+
+        describe("next", function () {
+            var schedulerWithEvents;
+
+            beforeEach(function () {
+                schedulerWithEvents = scheduler.getScheduler();
+                jasmine.Clock.useMock();
+            });
+
+            it("should return null if the is no events in queue", function () {
+                var schedulerWithoutEvents = scheduler.getScheduler(),
+                    nextReturned = schedulerWithoutEvents.next();
+
+                jasmine.Clock.tick(100);
+
+                expect(nextReturned).toBeNull();
+            });
+
+            it("should not fire event if scheduler is paused", function () {
+                var testValue = null;
+                schedulerWithEvents.queue(function () {
+                    testValue = {};
+                }, 1);
+
+                schedulerWithEvents.pause();
+                schedulerWithEvents.next();
+                jasmine.Clock.tick(100);
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(1);
+                expect(testValue).toBeNull();
+            });
+
+            it("should fire every event in queue one after another when scheduler is running", function () {
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.queue(function () {
+                }, 1);
+
+                schedulerWithEvents.isRunning = true;
+                schedulerWithEvents.next();
+                jasmine.Clock.tick(100);
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
+            });
+
+            it("should execute onComplete function after playing all events in queue", function () {
+                var onCompleteExecuted = false;
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.queue(function () {
+                }, 1);
+                schedulerWithEvents.onComplete = function () {
+                    onCompleteExecuted = true;
+                };
+
+                schedulerWithEvents.isRunning = true;
+                schedulerWithEvents.next();
+                jasmine.Clock.tick(100);
+
+                expect(schedulerWithEvents.getEventsQueue().length).toEqual(0);
+                expect(onCompleteExecuted).toBeTruthy();
+            });
+        });
     });
 });
