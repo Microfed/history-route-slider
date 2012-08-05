@@ -1,28 +1,53 @@
+/**
+ * @name scheduler
+ * @module scheduler
+ */
 define('scheduler', function () {
     "use strict";
-
+    /**
+     * @lends scheduler
+     * @exports scheduler
+     * @version 0.4
+     */
     return {
         /**
-         * @describe Return a new scheduler
+         * Return a new scheduler
          * @return {Object} Scheduler
          */
         getScheduler: function () {
             /**
-             * @describe event queue
+             * event queue
              * @type {Array}
+             * @memberOf Scheduler#
+             * @private
+             * @field
              */
             var events = [];
 
+            /**
+             * @class Scheduler
+             */
             return {
                 /**
-                 * @describe true if the scheduler is now processing events
+                 * true if the scheduler is now processing events
                  * @type {boolean}
+                 * @memberOf Scheduler#
+                 * @field
                  */
                 isRunning: false,
                 /**
-                 * @describe add event (first in first out)
+                 * add event (first in first out)
                  * @param {function} event callback to execute
                  * @param {number} time time delay
+                 * @throws First argument to scheduler.queue must be a function
+                 * @throws Second argument to scheduler.queue must be an integer
+                 * @memberOf Scheduler#
+                 * @example
+                 *  var customScheduler = scheduler.getScheduler();
+                 *      customScheduler.queue(function () {
+                 *          doSomething();
+                 *      }, 500);
+                 *      customScheduler.run();
                  */
                 queue: function (event, time) {
                     if (!event || typeof (event) !== "function") {
@@ -36,7 +61,8 @@ define('scheduler', function () {
                 },
 
                 /**
-                 * @describe execute queued events
+                 * execute queued events
+                 * @memberOf Scheduler#
                  */
                 run: function () {
                     if (!this.isRunning) { // don't run twice
@@ -46,7 +72,8 @@ define('scheduler', function () {
                 },
 
                 /**
-                 * @describe execute next event
+                 * execute next event
+                 * @memberOf Scheduler#
                  */
                 next: function () {
                     // return if no events
@@ -79,21 +106,24 @@ define('scheduler', function () {
                 },
 
                 /**
-                 * @describe empty event queue
+                 * empty event queue
+                 * @memberOf Scheduler#
                  */
                 clear: function () {
                     events = [];
                 },
 
                 /**
-                 * @describe pause execution of scheduled events without emptying event queue
+                 * pause execution of scheduled events without emptying event queue
+                 * @memberOf Scheduler#
                  */
                 pause: function () {
                     this.isRunning = false;
                 },
 
                 /**
-                 * @describe stop execution of scheduled events and empty event queue
+                 * stop execution of scheduled events and empty event queue
+                 * @memberOf Scheduler#
                  */
                 stop: function () {
                     this.pause();
@@ -102,14 +132,17 @@ define('scheduler', function () {
 
                 /**
                  * [optional]
-                 * @describe  callback when all events are processed
+                 * callback when all events are processed
                  * @type {function}
+                 * @memberOf Scheduler#
+                 * @field
                  */
                 onComplete: null,
 
                 /**
-                 * @describe return copy of events queue
+                 * return copy of events queue
                  * @return {Array} copy of events queue
+                 * @memberOf Scheduler#
                  */
                 getEventsQueue: function () {
                     return events.slice();
