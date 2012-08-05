@@ -4,7 +4,7 @@ define('layoutManager', ['jquery', 'scheduler'],
         var animationScheduler = scheduler.getScheduler();
 
         return function (config) {
-            var layoutEl = $('#' + config.layoutElId),
+            var layoutEl = config.layoutEl,
                 pagesEls = $('.' + config.pageElClass, layoutEl),
                 pageIdSuffix = config.pageIdSuffix,
                 /**
@@ -12,6 +12,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                  *  on the page.
                  */
                 layoutManager = {
+                    currentScreen: null,
                     /**
                      * @describe Animates the show of the page
                      * @param {String} page Page id
@@ -64,11 +65,13 @@ define('layoutManager', ['jquery', 'scheduler'],
                                             currentScreen.css('margin-top', '0px');
                                             pagesEls.hide();
                                             targetScreen.show();
-//                                            config.currentScreen = targetScreen;
                                         });
                                     }, duration);
                                 }
                             };
+
+                        // set current screen to target
+                        layoutManager.currentScreen = targetScreen[0];
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
                             // target screen on the left
@@ -87,6 +90,9 @@ define('layoutManager', ['jquery', 'scheduler'],
                         }
 
                         animationScheduler.run();
+                    },
+                    getCurrentScreen: function () {
+                        return layoutManager.currentScreen;
                     }
                 };
 

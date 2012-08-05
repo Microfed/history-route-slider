@@ -14,7 +14,7 @@ define('app', ['jquery', 'layoutManager', 'router'],
 
         $(function () {
             var config = {
-                    layoutElId: 'layout',
+                    layoutEl: $('#layout'),
                     pageIdSuffix: '-page',
                     pageElClass: 'page',
                     animationDuration: 300
