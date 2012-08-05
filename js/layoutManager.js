@@ -1,6 +1,8 @@
-define('layoutManager', ['jquery'],
-    function ($) {
+define('layoutManager', ['jquery', 'scheduler'],
+    function ($, scheduler) {
         "use strict";
+        var animationScheduler = scheduler.getScheduler();
+
         return function (config) {
             var layoutEl = $('#' + config.layoutElId),
                 pagesEls = $('.' + config.pageElClass, layoutEl),
@@ -8,7 +10,7 @@ define('layoutManager', ['jquery'],
                 layoutManager = {
                     displayPage: function (page) {
                         var targetScreen = layoutEl.find('#' + page + pageIdSuffix),
-                            currentScreen = layoutEl.find('#' + config.oldHash + pageIdSuffix),
+                            currentScreen = config.currentScreen || layoutEl.find('#' + config.oldHash + pageIdSuffix),
                             nextDivFromCurrentScreen = currentScreen.next(),
                             prevFromCurrentScreen = currentScreen.prev(),
                             targetScreenDivId = targetScreen.attr('id'),
@@ -18,39 +20,44 @@ define('layoutManager', ['jquery'],
                             /**
                              *  @describe Moves two html-elements in the way that
                              *  it seems like sequential sliding. It assumes that
-                             *  height of each element is identical + float: left;
+                             *  height of each element is identical;
                              *
                              *  @param {boolean} leftToRight Set sliding direction
                              */
                             slide = function (leftToRight, callback) {
-                                var cssMarginTop = '-' + divElHeight + 'px';
-
-                                if (leftToRight) {
-                                    targetScreen.css('margin-top', cssMarginTop);
+                                if (undefined !== callback && callback) {
+                                    callback();
                                 } else {
-                                    currentScreen.css('margin-top', cssMarginTop);
+                                    var cssMarginTop = '-' + divElHeight + 'px',
+                                        duration = config.animationDuration + 20;
+
+                                    animationScheduler.Queue(function () {
+                                        if (leftToRight) {
+                                            targetScreen.css('margin-top', cssMarginTop);
+                                        } else {
+                                            currentScreen.css('margin-top', cssMarginTop);
+                                        }
+
+                                        targetScreen.css('margin-left', leftToRight ? '100%' : '-100%');
+                                        currentScreen.css('margin-left', '0%');
+
+                                        targetScreen.show();
+
+                                        targetScreen.animate({
+                                            'margin-left': '0'
+                                        }, config.animationDuration);
+
+                                        currentScreen.animate({
+                                            'margin-left': leftToRight ? '-100%' : '100%'
+                                        }, config.animationDuration, function () {
+                                            targetScreen.css('margin-top', '0px');
+                                            currentScreen.css('margin-top', '0px');
+                                            pagesEls.hide();
+                                            targetScreen.show();
+                                            config.currentScreen = targetScreen;
+                                        });
+                                    }, duration);
                                 }
-
-                                targetScreen.css('margin-left', leftToRight ? '100%' : '-100%');
-                                currentScreen.css('margin-left', '0%');
-
-                                targetScreen.show();
-
-                                targetScreen.animate({
-                                    'margin-left': '0'
-                                }, config.animationDuration);
-
-                                currentScreen.animate({
-                                    'margin-left': leftToRight ? '-100%' : '100%'
-                                }, config.animationDuration, function () {
-                                    targetScreen.css('margin-top', '0px');
-                                    currentScreen.css('margin-top', '0px');
-                                    pagesEls.hide();
-                                    targetScreen.show();
-                                    if (undefined !== callback && callback) {
-                                        callback();
-                                    }
-                                });
                             };
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
@@ -68,6 +75,8 @@ define('layoutManager', ['jquery'],
                             config.oldHash = targetScreenDivId;
                             slide(false, layoutManager.displayPage(prevFromCurrentScreenId));
                         }
+
+                        animationScheduler.Run();
                     }
                 };
 
