@@ -105,7 +105,15 @@ define('scheduler', function () {
                  * @describe  callback when all events are processed
                  * @type {function}
                  */
-                onComplete: null
+                onComplete: null,
+
+                /**
+                 * @describe return copy of events queue
+                 * @return {Array} copy of events queue
+                 */
+                getEventsQueue: function () {
+                    return events.slice();
+                }
             };
         }
     };

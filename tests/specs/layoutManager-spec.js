@@ -39,7 +39,7 @@ require(['layoutManager'], function (layoutManager) {
                     animationDuration: 300
                 },
                 layoutManagerInst = layoutManager(config);
-            expect(layoutManagerInst.getCurrentScreen()).toBe(null);
+            expect(layoutManagerInst.getCurrentScreen()).toBeNull();
         });
     });
 });
