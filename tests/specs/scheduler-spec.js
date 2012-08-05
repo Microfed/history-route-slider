@@ -158,7 +158,7 @@ require(['scheduler'], function (scheduler) {
                 expect(testValue).toBeNull();
             });
 
-            it("should fire every event in queue one after another when scheduler is running", function () {
+            it("should fire every event in the queue one after another when scheduler is running", function () {
                 schedulerWithEvents.queue(function () {
                 }, 1);
                 schedulerWithEvents.queue(function () {
