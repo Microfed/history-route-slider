@@ -1,6 +1,5 @@
 /**
- * @name scheduler
- * @module scheduler
+  * @module scheduler
  */
 define('scheduler', function () {
     "use strict";
@@ -23,7 +22,6 @@ define('scheduler', function () {
              * @field
              */
             var events = [];
-
             /**
              * @class Scheduler
              */

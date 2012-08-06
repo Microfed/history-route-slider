@@ -1,21 +1,50 @@
+/**
+ * @module layoutManager
+ * @requires jquery
+ * @requires scheduler
+ */
 define('layoutManager', ['jquery', 'scheduler'],
     function ($, scheduler) {
         "use strict";
+        /**
+         * @exports layoutManager
+         * @version 0.6
+         */
+
+        /**
+         * Event queue
+         * @type {Object}
+         * @member animationScheduler
+         * @memberOf LayoutManager#
+         * @private
+         */
         var animationScheduler = scheduler.getScheduler();
 
         return function (config) {
+            /**
+             * Return a new configured layoutManager
+             * @return {Object} layoutManager
+             */
             var layoutEl = config.layoutEl,
                 pagesEls = $('.' + config.pageElClass, layoutEl),
                 pageIdSuffix = config.pageIdSuffix,
                 /**
-                 * @describe contain methods for work with screens
+                 * Contain methods for work with screens
                  *  on the page.
+                 *  @class LayoutManager
                  */
-                layoutManager = {
+                LayoutManager = {
+                    /**
+                     * CurrentScreen
+                     * @type {HtmlObject}
+                     * @memberOf LayoutManager#
+                     * @field
+                     */
                     currentScreen: null,
                     /**
-                     * @describe Animates the show of the page
+                     * Animates the show of the page
                      * @param {String} page Page id
+                     * @memberOf LayoutManager#
                      */
                     displayPage: function (page) {
                         var targetScreen = layoutEl.find('#' + page + pageIdSuffix),
@@ -27,11 +56,13 @@ define('layoutManager', ['jquery', 'scheduler'],
                             prevFromCurrentScreenId = prevFromCurrentScreen.attr('id'),
                             divElHeight = currentScreen.height(),
                             /**
-                             *  @describe Moves two html-elements in the way that
+                             *  Moves two html-elements in the way that
                              *  it seems like sequential sliding. It assumes that
                              *  height of each element is identical;
                              *
                              *  @param {boolean} leftToRight Set sliding direction
+                             *  @param {function} callback
+                             *  @memberOf displayPage#
                              */
                             slide = function (leftToRight, callback) {
                                 // skip the page movement animation, if the is a callback
@@ -71,7 +102,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                             };
 
                         // set current screen to target
-                        layoutManager.currentScreen = targetScreen[0];
+                        LayoutManager.currentScreen = targetScreen[0];
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
                             // target screen on the left
@@ -82,20 +113,25 @@ define('layoutManager', ['jquery', 'scheduler'],
                         } else if (nextDivFromCurrentScreenId !== undefined) {
                             // target screen on the left far away from current
                             config.oldHash = targetScreenDivId;
-                            slide(true, layoutManager.displayPage(nextDivFromCurrentScreenId));
+                            slide(true, LayoutManager.displayPage(nextDivFromCurrentScreenId));
                         } else if (prevFromCurrentScreenId !== undefined) {
                             // target screen on the right far away from current
                             config.oldHash = targetScreenDivId;
-                            slide(false, layoutManager.displayPage(prevFromCurrentScreenId));
+                            slide(false, LayoutManager.displayPage(prevFromCurrentScreenId));
                         }
 
                         animationScheduler.run();
                     },
+                    /**
+                     * Returns active screen
+                     * @return {HtmlElemet}
+                     * @memberOf LayoutManager#
+                     */
                     getCurrentScreen: function () {
-                        return layoutManager.currentScreen;
+                        return LayoutManager.currentScreen;
                     }
                 };
 
-            return layoutManager;
+            return LayoutManager;
         };
     });
