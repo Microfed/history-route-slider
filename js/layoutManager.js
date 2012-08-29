@@ -70,7 +70,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                                     callback();
                                 } else {
                                     var cssMarginTop = '-' + divElHeight + 'px',
-                                        duration = config.animationDuration + 20; // duration of event for scheduler
+                                        duration = animationScheduler.isEventsQueueEmpty() ? 0 : config.animationDuration + 20;
 
                                     // Adding a slide animation to events queue
                                     animationScheduler.queue(function () {

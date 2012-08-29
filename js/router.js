@@ -45,17 +45,19 @@ define('router', ['crossroads', 'hasher'],
 
                     // setup hasher
                     function parseHash(newHash, oldHash) {
-                        if (config.oldHash !== oldHash) {
+                        if (newHash && oldHash) {
                             // we need old state for proper slide animation on layout
                             config.oldHash = oldHash;
+                            crossroads.parse(newHash);
                         }
-                        crossroads.parse(newHash);
                     }
 
                     hasher.initialized.add(parseHash); // parse initial hash
                     hasher.changed.add(parseHash); // parse hash changes
                     hasher.init(); // start listening for history change
 
+
+                    config.oldHash = firstPageName;
                     // update URL fragment generating new history record
                     hasher.setHash(firstPageName);
                 },

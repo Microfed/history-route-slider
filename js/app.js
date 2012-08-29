@@ -15,21 +15,31 @@ define('app', ['jquery', 'layoutManager', 'router'],
         $(function () {
             var config = {
                     layoutEl: $('#layout'),
-                    pageIdSuffix: '-page',
+                    pageIdSuffix: '',
                     pageElClass: 'page',
                     animationDuration: 300
                 },
                 layoutManagerInst = layoutManager(config),
-                routerInst = router(layoutManagerInst, config, 'home');
+                routerInst = router(layoutManagerInst, config, 'slide1'),
+                currentSlideId = 1,
+                pagesNumber = $(".page").length;
 
             routerInst.init();
 
-            // adding onclick events on each button
-            $('input').each(function () {
-                $(this).on('click', function (event) {
-                    routerInst.setHash(this.id);
-                    event.preventDefault();
-                });
+            $('.slide-prev').on('click', function () {
+                if (currentSlideId !== 1) {
+                    currentSlideId -= 1;
+                }
+                routerInst.setHash('slide' + currentSlideId);
+                event.preventDefault();
+            });
+
+            $('.slide-next').on('click', function () {
+                if (currentSlideId !== pagesNumber) {
+                    currentSlideId += 1;
+                }
+                routerInst.setHash('slide' + currentSlideId);
+                event.preventDefault();
             });
         });
 
