@@ -1,28 +1,45 @@
+/**
+ * @module scheduler
+ */
 define('scheduler', function () {
     "use strict";
-
     return {
         /**
-         * @describe Return a new scheduler
+         * Return a new scheduler
          * @return {Object} Scheduler
          */
         getScheduler: function () {
             /**
-             * @describe event queue
+             * event queue
              * @type {Array}
+             * @property events
+             * @private
              */
             var events = [];
-
+            /**
+             * @class Scheduler
+             */
             return {
                 /**
-                 * @describe true if the scheduler is now processing events
+                 * true if the scheduler is now processing events
                  * @type {boolean}
+                 * @for Scheduler
+                 * @property isRunning
                  */
                 isRunning: false,
                 /**
-                 * @describe add event (first in first out)
+                 * add event (first in first out)
                  * @param {function} event callback to execute
                  * @param {number} time time delay
+                 * @throws First argument to scheduler.queue must be a function
+                 * @throws Second argument to scheduler.queue must be an integer
+                 * @method queue
+                 * @example
+                 *  var customScheduler = scheduler.getScheduler();
+                 *      customScheduler.queue(function () {
+                 *          doSomething();
+                 *      }, 500);
+                 *      customScheduler.run();
                  */
                 queue: function (event, time) {
                     if (!event || typeof (event) !== "function") {
@@ -36,7 +53,8 @@ define('scheduler', function () {
                 },
 
                 /**
-                 * @describe execute queued events
+                 * execute queued events
+                 * @method run
                  */
                 run: function () {
                     if (!this.isRunning) { // don't run twice
@@ -46,7 +64,8 @@ define('scheduler', function () {
                 },
 
                 /**
-                 * @describe execute next event
+                 * execute next event
+                 * @method next
                  */
                 next: function () {
                     // return if no events
@@ -79,21 +98,24 @@ define('scheduler', function () {
                 },
 
                 /**
-                 * @describe empty event queue
+                 * empty event queue
+                 * @method clear
                  */
                 clear: function () {
                     events = [];
                 },
 
                 /**
-                 * @describe pause execution of scheduled events without emptying event queue
+                 * pause execution of scheduled events without emptying event queue
+                 * @method pause
                  */
                 pause: function () {
                     this.isRunning = false;
                 },
 
                 /**
-                 * @describe stop execution of scheduled events and empty event queue
+                 * stop execution of scheduled events and empty event queue
+                 * @method stop
                  */
                 stop: function () {
                     this.pause();
@@ -102,17 +124,28 @@ define('scheduler', function () {
 
                 /**
                  * [optional]
-                 * @describe  callback when all events are processed
+                 * callback when all events are processed
                  * @type {function}
+                 * @property onComplete
                  */
                 onComplete: null,
 
                 /**
-                 * @describe return copy of events queue
+                 * return copy of events queue
                  * @return {Array} copy of events queue
+                 * @method getEventsQueue
                  */
                 getEventsQueue: function () {
                     return events.slice();
+                },
+
+                /**
+                 * Return true, if events queue is empty and false otherwise.
+                 * @return {Boolean}
+                 * @method isEventsQueueEmpty
+                 */
+                isEventsQueueEmpty: function () {
+                    return events.length === 0;
                 }
             };
         }

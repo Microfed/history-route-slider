@@ -1,21 +1,42 @@
+/**
+ * @module router
+ * @requires crossroads
+ * @requires hasher
+ */
 define('router', ['crossroads', 'hasher'],
     function (crossroads, hasher) {
         "use strict";
         /**
-         * @describe Returns a configured router object
+         * @exports layoutManager
+         * @version 0.2
+         */
+
+        /**
+         * Returns a configured router object
          * @param {Object} layoutManager Instance of layoutManager
          * @param {Object} config Configuration for router and layoutManager
-         * @param {String} firstPageName Name of the page to show when router is initialized
          * @return {Object} Configured router object
+         * @constructor  Router
+         * @example
+         *  var config = {
+         *   layoutEl: $('#layout'),
+         *   pageIdSuffix: '-page',
+         *   pageElClass: 'page',
+         *   animationDuration: 300
+         *   },
+         *   layoutManagerInst = layoutManager(config),
+         *   routerInst = router(layoutManagerInst, config, 'home');
          */
-        return function (layoutManager, config, firstPageName) {
+        return function (layoutManager, config) {
             /**
-             * @describe contain methods for hash (URL) routing.
+             * Contain methods for hash (URL) routing.
+             * @class Router
              */
             return {
                 /**
-                 * @describe initializing router and rigging it with
+                 * Initializing router and rigging it with
                  * layoutManager for handling route changes
+                 * @memberOf  Router#
                  */
                 init: function () {
                     // layout updates every time the URL meets the condition defined in first arg
@@ -23,23 +44,26 @@ define('router', ['crossroads', 'hasher'],
 
                     // setup hasher
                     function parseHash(newHash, oldHash) {
-                        if (config.oldHash !== oldHash) {
+                        if (newHash && oldHash) {
                             // we need old state for proper slide animation on layout
                             config.oldHash = oldHash;
+                            crossroads.parse(newHash);
                         }
-                        crossroads.parse(newHash);
                     }
 
                     hasher.initialized.add(parseHash); // parse initial hash
                     hasher.changed.add(parseHash); // parse hash changes
                     hasher.init(); // start listening for history change
 
+
+                    config.oldHash = config.firstPage;
                     // update URL fragment generating new history record
-                    hasher.setHash(firstPageName);
+                    hasher.setHash(config.firstPage);
                 },
                 /**
-                 * @describe Setting hash (part of page URL)
+                 * Setting hash (part of page URL)
                  * @param {String} hash Value to set
+                 * @memberOf  Router#
                  */
                 setHash: function (hash) {
                     hasher.setHash(hash);

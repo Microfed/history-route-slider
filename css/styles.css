@@ -1,34 +1,60 @@
 #layout {
-    width: 99%;
-    height: 650px;
+    width: 300px;
+    height: 218px;
     overflow: hidden;
+    margin: 0 auto;
+    float: left;
 }
-.page{
+
+.slider-container {
+    margin: 0 auto;
+}
+
+.slide-prev, .slide-next {
+    height: 218px;
+    width: 21px;
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.slide-next {
+    float: left;
+    background: url(../i/slide_next.png) no-repeat;
+}
+
+.slide-next:hover {
+    background: url(../i/slide_next_hover.png) no-repeat;
+}
+
+.slide-prev {
+    float: left;
+    background: url(../i/slide_prev.png) no-repeat;
+}
+
+.slide-prev:hover {
+    background: url(../i/slide_prev_hover.png) no-repeat;
+}
+
+.page {
     width: 100%;
-    height: 650px;
+    height: 218px;
     margin-top: 0;
 }
-.page-animating{
-    margin-top: -650px;
-}
-.page-animated{
-    margin-top: 0;
-}
-.page-slide-left-to-right{
-    margin-left: 100%;
-}
-.page-slide-right-to-left{
-    margin-left: -100%;
-}
-#home-page{
+
+#slide1 {
     background-color: #336699;
 }
-#first-page{
+
+#slide2 {
     background-color: #ffaa00;
 }
-#second-page{
+
+#slide3 {
     background-color: #dd3388;
 }
-#third-page{
+
+#slide4 {
     background-color: #f87216;
 }
