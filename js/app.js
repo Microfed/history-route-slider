@@ -1,13 +1,3 @@
-require.config({
-    baseUrl: 'js',
-    paths: {
-        'jquery': 'lib/jquery',
-        'signals': 'lib/signals',
-        'crossroads': 'lib/crossroads',
-        'hasher': 'lib/hasher'
-    }
-});
-
 define('app', ['jquery', 'layoutManager', 'router'],
     function ($, layoutManager, router) {
         'use strict';

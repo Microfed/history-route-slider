@@ -20,5 +20,3 @@ plugin:
    module: "com.google.jstestdriver.coverage.CoverageModule"
 
 timeout: 90
-
-
