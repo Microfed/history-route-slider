@@ -6,7 +6,7 @@
  */
 
 (function (define) {
-define('crossroads', ['signals'], function (_signals) {
+define('lib/crossroads', ['lib/signals'], function (_signals) {
 
     var crossroads,
         _hasOptionalGroupBug,

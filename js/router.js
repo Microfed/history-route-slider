@@ -3,7 +3,7 @@
  * @requires crossroads
  * @requires hasher
  */
-define('router', ['crossroads', 'hasher'],
+define('router', ['lib/crossroads', 'lib/hasher'],
     function (crossroads, hasher) {
         "use strict";
         /**

@@ -3,7 +3,7 @@
  * @requires jquery
  * @requires scheduler
  */
-define('layoutManager', ['jquery', 'scheduler'],
+define('layoutManager', ['lib/jquery', 'scheduler'],
     function ($, scheduler) {
         "use strict";
         /**
