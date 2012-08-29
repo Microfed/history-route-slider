@@ -33,7 +33,7 @@ define('layoutManager', ['jquery', 'scheduler'],
                  *  on the page.
                  *  @class LayoutManager
                  */
-                LayoutManager = {
+                    LayoutManager = {
                     /**
                      * CurrentScreen
                      * @type {HtmlObject}
@@ -64,41 +64,37 @@ define('layoutManager', ['jquery', 'scheduler'],
                              *  @param {function} callback
                              *  @memberOf displayPage#
                              */
-                            slide = function (leftToRight, callback) {
+                                slide = function (leftToRight) {
                                 // skip the page movement animation, if the is a callback
-                                if (undefined !== callback && callback) {
-                                    callback();
-                                } else {
-                                    var cssMarginTop = '-' + divElHeight + 'px',
-                                        duration = animationScheduler.isEventsQueueEmpty() ? 0 : config.animationDuration + 20;
+                                var cssMarginTop = '-' + divElHeight + 'px',
+                                    duration = animationScheduler.isEventsQueueEmpty() ? 0 : config.animationDuration + 20;
 
-                                    // Adding a slide animation to events queue
-                                    animationScheduler.queue(function () {
-                                        if (leftToRight) {
-                                            targetScreen.css('margin-top', cssMarginTop);
-                                        } else {
-                                            currentScreen.css('margin-top', cssMarginTop);
-                                        }
+                                // Adding a slide animation to events queue
+                                animationScheduler.queue(function () {
+                                    if (leftToRight) {
+                                        targetScreen.css('margin-top', cssMarginTop);
+                                    } else {
+                                        currentScreen.css('margin-top', cssMarginTop);
+                                    }
 
-                                        targetScreen.css('margin-left', leftToRight ? '100%' : '-100%');
-                                        currentScreen.css('margin-left', '0%');
+                                    targetScreen.css('margin-left', leftToRight ? '100%' : '-100%');
+                                    currentScreen.css('margin-left', '0%');
 
+                                    targetScreen.show();
+
+                                    targetScreen.animate({
+                                        'margin-left': '0'
+                                    }, config.animationDuration);
+
+                                    currentScreen.animate({
+                                        'margin-left': leftToRight ? '-100%' : '100%'
+                                    }, config.animationDuration, function () {
+                                        targetScreen.css('margin-top', '0px');
+                                        currentScreen.css('margin-top', '0px');
+                                        pagesEls.hide();
                                         targetScreen.show();
-
-                                        targetScreen.animate({
-                                            'margin-left': '0'
-                                        }, config.animationDuration);
-
-                                        currentScreen.animate({
-                                            'margin-left': leftToRight ? '-100%' : '100%'
-                                        }, config.animationDuration, function () {
-                                            targetScreen.css('margin-top', '0px');
-                                            currentScreen.css('margin-top', '0px');
-                                            pagesEls.hide();
-                                            targetScreen.show();
-                                        });
-                                    }, duration);
-                                }
+                                    });
+                                }, duration);
                             };
 
                         // set current screen to target
@@ -106,18 +102,10 @@ define('layoutManager', ['jquery', 'scheduler'],
 
                         if (targetScreenDivId === nextDivFromCurrentScreenId) {
                             // target screen on the left
-                            slide(true, null);
+                            slide(true);
                         } else if (targetScreenDivId === prevFromCurrentScreenId) {
                             // target screen on the right
-                            slide(false, null);
-                        } else if (nextDivFromCurrentScreenId !== undefined) {
-                            // target screen on the left far away from current
-                            config.oldHash = targetScreenDivId;
-                            slide(true, LayoutManager.displayPage(nextDivFromCurrentScreenId));
-                        } else if (prevFromCurrentScreenId !== undefined) {
-                            // target screen on the right far away from current
-                            config.oldHash = targetScreenDivId;
-                            slide(false, LayoutManager.displayPage(prevFromCurrentScreenId));
+                            slide(false);
                         }
 
                         animationScheduler.run();

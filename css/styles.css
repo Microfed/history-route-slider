@@ -1,6 +1,6 @@
 #layout {
     width: 300px;
-    height: 200px;
+    height: 218px;
     overflow: hidden;
     margin: 0 auto;
     float: left;
@@ -11,21 +11,35 @@
 }
 
 .slide-prev, .slide-next {
-    height: 200px;
-    width: 40px;
+    height: 218px;
+    width: 21px;
     display: table-cell;
     vertical-align: middle;
     margin: 0 auto;
     cursor: pointer;
 }
 
+.slide-next {
+    float: left;
+    background: url(../i/slide_next.png) no-repeat;
+}
+
+.slide-next:hover {
+    background: url(../i/slide_next_hover.png) no-repeat;
+}
+
 .slide-prev {
     float: left;
+    background: url(../i/slide_prev.png) no-repeat;
+}
+
+.slide-prev:hover {
+    background: url(../i/slide_prev_hover.png) no-repeat;
 }
 
 .page {
     width: 100%;
-    height: 200px;
+    height: 218px;
     margin-top: 0;
 }
 

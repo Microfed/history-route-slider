@@ -13,17 +13,30 @@ define('app', ['jquery', 'layoutManager', 'router'],
         'use strict';
 
         $(function () {
-            var config = {
+            var trimHash = function (hash) {
+                    if (!hash) {
+                        return '';
+                    }
+                    var regexp = new RegExp('^#/', 'g');
+                    return hash.replace(regexp, '');
+                },
+                layoutManagerInst,
+                routerInst,
+                currentSlideId = 1,
+                pagesNumber = $(".page").length,
+                firstSlide = 'slide1',
+                firstPage = firstSlide,
+                config = {
                     layoutEl: $('#layout'),
                     pageIdSuffix: '',
                     pageElClass: 'page',
-                    animationDuration: 300
-                },
-                layoutManagerInst = layoutManager(config),
-                routerInst = router(layoutManagerInst, config, 'slide1'),
-                currentSlideId = 1,
-                pagesNumber = $(".page").length;
+                    animationDuration: 300,
+                    firstPage: firstPage,
+                    firstSlide: firstSlide
+                };
 
+            layoutManagerInst = layoutManager(config);
+            routerInst = router(layoutManagerInst, config);
             routerInst.init();
 
             $('.slide-prev').on('click', function () {

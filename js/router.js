@@ -15,7 +15,6 @@ define('router', ['crossroads', 'hasher'],
          * Returns a configured router object
          * @param {Object} layoutManager Instance of layoutManager
          * @param {Object} config Configuration for router and layoutManager
-         * @param {String} firstPageName Name of the page to show when router is initialized
          * @return {Object} Configured router object
          * @constructor  Router
          * @example
@@ -28,7 +27,7 @@ define('router', ['crossroads', 'hasher'],
          *   layoutManagerInst = layoutManager(config),
          *   routerInst = router(layoutManagerInst, config, 'home');
          */
-        return function (layoutManager, config, firstPageName) {
+        return function (layoutManager, config) {
             /**
              * Contain methods for hash (URL) routing.
              * @class Router
@@ -57,9 +56,9 @@ define('router', ['crossroads', 'hasher'],
                     hasher.init(); // start listening for history change
 
 
-                    config.oldHash = firstPageName;
+                    config.oldHash = config.firstPage;
                     // update URL fragment generating new history record
-                    hasher.setHash(firstPageName);
+                    hasher.setHash(config.firstPage);
                 },
                 /**
                  * Setting hash (part of page URL)
